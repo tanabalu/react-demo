@@ -1,68 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React属性代理与反向继承
 
-## Available Scripts
+此demo重点在于理解在属性代理和反向继承两种情况下外层高级组件和被包裹组件在`创建时`的生命周期调用顺序。销毁时的调用顺序可自行推导。
 
-In the project directory, you can run:
+## 操作
 
-### `yarn start`
+切换App组件的包裹容器（HOC/ReverseHOC），查看控制台输出。
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+另外可编辑ReverseHOC高级组件中的对被包裹容器的生命周期的调用位置与调用顺序。
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 简单结论
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+> + 属性代理方式创建生命周期的调用顺序：`super componentWillMount`、`super render`、`item componentWillMount`、`item render`、`item componentDidMount`、`super componentDidMount`。这个顺序是不可变的。
+> + 反向继承方式创建生命周期的调用顺序：默认只会按顺序执行`super componentWillMount`、`super render`、`super componentDidMount`这四个生命周期函数。被包裹组件内的`componentWillMount`和`componentDidMount`两个函数未被调用。
+> + 在反向继承方式下，在高级组件中可以在任意位置使用super对象去调取被包裹组件的生命周期函数。当然对于被包裹组件生命周期函数的调用还需要谨慎。
