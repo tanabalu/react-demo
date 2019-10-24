@@ -7,13 +7,11 @@ const ReverseHOC = (WrappedComponent) => class extends WrappedComponent {
     componentWillMount() {
         console.log('super componentWillMount');
         super.componentWillMount();
-        // super.componentDidMount();
     }
 
     componentDidMount() {
         console.log('super componentDidMount');
         super.componentDidMount();
-        // super.componentWillMount();
     }
 
     render() { 
